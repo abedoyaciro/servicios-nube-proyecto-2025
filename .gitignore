@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Archivos de estado de Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
 # dependencies
 /node_modules
 /.pnp
@@ -35,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+.env.local
+
+aws-exports.js
