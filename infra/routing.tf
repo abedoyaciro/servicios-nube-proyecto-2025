@@ -14,11 +14,11 @@ resource "aws_eip" "nat_gateway_eip" {
   # a veces es útil ser explícito con dependencias cruzadas.
   depends_on = [
     aws_internet_gateway.nexa_igw, # Asume que IGW está en main.tf
-    aws_vpc.nexa_vpc              # Asume que VPC está en main.tf
+    aws_vpc.nexa_vpc               # Asume que VPC está en main.tf
   ]
 
   tags = {
-    Name = "${var.project_name}-nat-eip"
+    Name        = "${var.project_name}-nat-eip"
     Environment = var.environment
   }
 }
@@ -28,10 +28,10 @@ resource "aws_eip" "nat_gateway_eip" {
 resource "aws_nat_gateway" "nexa_nat_gateway" {
   allocation_id = aws_eip.nat_gateway_eip.id
   # El NAT Gateway DEBE residir en la primera Subred Pública para funcionar.
-  subnet_id     = aws_subnet.public_subnet[0].id
-  
+  subnet_id = aws_subnet.public_subnet[0].id
+
   tags = {
-    Name = "${var.project_name}-nat-gw"
+    Name        = "${var.project_name}-nat-gw"
     Environment = var.environment
   }
 }

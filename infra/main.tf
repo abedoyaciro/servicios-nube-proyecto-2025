@@ -7,7 +7,7 @@ terraform {
   required_providers {
     aws = {
       # El source es el nombre del provider
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
       # Usaremos una versión reciente que soporta los recursos requeridos
       version = "~> 5.0"
     }

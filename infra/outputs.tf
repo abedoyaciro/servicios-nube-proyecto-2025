@@ -28,3 +28,8 @@ output "nat_gateway_id" {
   description = "ID del NAT Gateway (punto de salida de la red privada)."
   value       = aws_nat_gateway.nexa_nat_gateway.id
 }
+
+# ------------------------------------------------------
+# 2. SALIDAS CLAVE DE LA BASE DE DATOS, RDS Y S3
+# ------------------------------------------------------
+# Outputs para facilitar acceso
