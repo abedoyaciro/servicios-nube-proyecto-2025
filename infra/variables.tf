@@ -49,3 +49,18 @@ variable "private_subnets" {
   type        = list(string)
   default     = ["10.0.10.0/24", "10.0.20.0/24"]
 }
+# ----------------------------------------------------
+# 3. VARIABLES DE RECURSOS EXISTENTES (usadas por RDS y Lambdas)
+# ----------------------------------------------------
+
+# IDs de subredes privadas existentes (para conectar Lambdas y RDS)
+# variable "private_subnet_ids" {
+#  description = "Lista de IDs de las subredes privadas donde se conectarán los recursos internos"
+#  type        = list(string)
+#}
+
+# ID de la VPC existente
+variable "vpc_id" {
+  description = "ID de la VPC existente donde se desplegarán los recursos"
+  type        = string
+}
