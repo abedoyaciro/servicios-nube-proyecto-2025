@@ -40,6 +40,18 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Terraform Files
+# --------------------
+# Archivos de estado local que DEBEN ser ignorados
+*.tfstate
+*.tfstate.backup
+# Directorio de plugins y caché (no debe subirse)
+.terraform/
+# Archivo de bloqueo de versiones de provider (generalmente se ignora si no se usa S3 backend)
+.terraform.lock.hcl
+# Claves sensibles y secretos
+*.tfvars
+
 .env
 .env.local
 
