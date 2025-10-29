@@ -1,20 +1,21 @@
 ###################################
-# DATABASE - RDS PostgreSQL
+# DATABASE - RDS PostgreSQL (usando VPC existente)
 ###################################
 
 # Generar contraseña aleatoria segura
 resource "random_password" "rds_master" {
   length           = 16
   special          = true
-  override_special = "!@#-"
+  override_special = "!#%&*()_+=-"
 }
 
-# Grupo de subredes para RDS (usa las privadas)
+
+# Grupo de subredes para RDS (usa las privadas ya creadas)
 resource "aws_db_subnet_group" "nexa_subnet_group" {
   name       = "nexa-db-subnet-group"
   subnet_ids = [
-    "subnet-030a9a57290944b72",
-    "subnet-0da8ea493227c1d88"
+    "subnet-0ba127d7c38f549f2",
+    "subnet-05d338d9ae527088f"
   ]
   description = "Subredes privadas para RDS NexaCloud"
 }
@@ -23,10 +24,10 @@ resource "aws_db_subnet_group" "nexa_subnet_group" {
 resource "aws_security_group" "nexa_rds_sg" {
   name        = "nexa-rds-sg"
   description = "Permite acceso al RDS en puerto 9876"
-  vpc_id      = "vpc-0ed7721739bd38dcc"
+  vpc_id      = "vpc-01e3265cca52090cd"
 
   ingress {
-    description = "Acceso al RDS desde la VPC"
+    description = "Acceso interno al RDS desde la VPC"
     from_port   = 9876
     to_port     = 9876
     protocol    = "tcp"
@@ -64,11 +65,12 @@ resource "aws_db_instance" "nexa_db" {
   db_subnet_group_name    = aws_db_subnet_group.nexa_subnet_group.name
 
   tags = {
-    Name = "nexa-rds-instance"
+    Name    = "nexa-rds-instance"
     Project = "NexaCloud"
   }
 }
 
+# Output para mostrar el endpoint del RDS
 output "rds_endpoint" {
   description = "Endpoint del RDS NexaCloud"
   value       = aws_db_instance.nexa_db.endpoint
