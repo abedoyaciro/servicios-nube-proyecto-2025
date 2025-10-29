@@ -65,13 +65,15 @@ resource "aws_lambda_function" "nexa_db_lambda" {
   source_code_hash = filebase64sha256("${path.module}/lambda_db.zip")
 
   environment {
-    variables = {
-      DB_HOST     = data.terraform_remote_state.infra.outputs.rds_endpoint
-      DB_USER     = "nexa_user"
-      DB_PASSWORD = "NexaPass123!"
-      DB_NAME     = "nexacloud"
-    }
+  variables = {
+    DB_HOST     = data.terraform_remote_state.infra.outputs.rds_endpoint
+    DB_PORT     = "9876"
+    DB_USER     = "nexa_admin"
+    DB_PASSWORD = "NexaPass123!"
+    DB_NAME     = "nexacloud"
   }
+}
+
 
   vpc_config {
     subnet_ids         = data.terraform_remote_state.infra.outputs.private_subnet_ids
@@ -97,10 +99,11 @@ resource "aws_lambda_function" "nexa_s3_lambda" {
   source_code_hash = filebase64sha256("${path.module}/lambda_s3.zip")
 
   environment {
-    variables = {
-      S3_BUCKET = data.terraform_remote_state.infra.outputs.s3_bucket_name
-    }
+  variables = {
+    BUCKET_NAME = data.terraform_remote_state.infra.outputs.s3_bucket_name
   }
+}
+
 
   vpc_config {
     subnet_ids         = data.terraform_remote_state.infra.outputs.private_subnet_ids
@@ -112,46 +115,3 @@ resource "aws_lambda_function" "nexa_s3_lambda" {
   ]
 }
 
-# ----------------------------------------------------
-# 7. API GATEWAY (para Lambda de RDS)
-# ----------------------------------------------------
-resource "aws_api_gateway_rest_api" "nexa_db_api" {
-  name        = "nexa-db-api"
-  description = "API Gateway para Lambda que conecta con RDS"
-}
-
-resource "aws_api_gateway_resource" "nexa_db_resource" {
-  rest_api_id = aws_api_gateway_rest_api.nexa_db_api.id
-  parent_id   = aws_api_gateway_rest_api.nexa_db_api.root_resource_id
-  path_part   = "db"
-}
-
-resource "aws_api_gateway_method" "nexa_db_method" {
-  rest_api_id   = aws_api_gateway_rest_api.nexa_db_api.id
-  resource_id   = aws_api_gateway_resource.nexa_db_resource.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "nexa_db_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.nexa_db_api.id
-  resource_id             = aws_api_gateway_resource.nexa_db_resource.id
-  http_method             = aws_api_gateway_method.nexa_db_method.http_method
-  integration_http_method = "POST"
-  type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.nexa_db_lambda.invoke_arn
-}
-
-resource "aws_lambda_permission" "nexa_db_permission" {
-  statement_id  = "AllowAPIGatewayInvokeDB"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.nexa_db_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.nexa_db_api.execution_arn}/*/*"
-}
-
-# ---------------------------------------------------- 8. 
-# OUTPUTS ---------------------------------------------------- 
-# output "lambda_db_api_endpoint" {
-#  value = aws_api_gateway_rest_api.nexa_db_api.execution_arn
-#}
