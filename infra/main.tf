@@ -32,14 +32,18 @@ Para que el trabajo en equipo sea robusto y auditable, la MEJOR PRÁCTICA
 es almacenar el estado de Terraform (terraform.tfstate) en un bucket de S3.
 Esto es necesario para que los demás puedan ver los IDs de los 
 recursos que tú creaste (ej. el ID de la VPC).
-
-Sin embargo, para evitar dependencias circulares (el bucket de S3 aún no existe),
-por ahora usaremos el backend local.
 */
-# terraform {
-#   backend "s3" {
-#     bucket = "nexa-cloud-tf-state-111811373821" # Reemplazar con el ID de tu cuenta
-#     key    = "nexa-cloud-pilot/terraform.tfstate"
-#     region = "us-east-1"
-#   }
-# }
+/*
+terraform {
+  backend "s3" {
+    bucket         = "nexa-cloud-tf-state-111811373821" 
+
+    # KEY: El nombre y la ruta que tendrá tu archivo de estado DENTRO del Bucket S3.
+    key            = "network-base.tfstate"
+
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "nexa-cloud-pilot-terraform-locks" 
+  }
+}
+*/

@@ -18,8 +18,22 @@ variable "environment" {
   default     = "Dev"
 }
 
+variable "account_id" {
+  description = "ID de la cuenta AWS, usado para nombrar recursos globales como los S3 Buckets."
+  type        = string
+  # Valor defecto, que cada compañero debe cambiar manualmente.
+  default     = "111811373821" 
+}
+
+variable "ssh_source_ip" {
+  description = "Tu IP pública o rango CIDR para permitir el acceso SSH seguro (puerto 2222) a las instancias EC2."
+  type        = string
+  # Ya que la defines en el .tfvars, puedes dejar un valor por defecto seguro.
+  default     = "0.0.0.0/0" 
+}
+
 # ----------------------------------------------------
-# 2. VARIABLES DE RED (Paquete 1: Tu tarea)
+# 2. VARIABLES DE RED
 # ----------------------------------------------------
 
 # Bloque CIDR principal para toda la VPC
