@@ -33,13 +33,7 @@ es almacenar el estado de Terraform (terraform.tfstate) en un bucket de S3.
 Esto es necesario para que los demás puedan ver los IDs de los 
 recursos que tú creaste (ej. el ID de la VPC).
 */
-# terraform {
-#   backend "s3" {
-#     bucket = "nexa-cloud-tf-state-111811373821" # Reemplazar con el ID de la cuenta
-#     key    = "nexa-cloud-pilot/terraform.tfstate"
-#     region = "us-east-1"
-#   }
-# }
+/*
 terraform {
   backend "s3" {
     bucket         = "nexa-cloud-tf-state-111811373821" 
@@ -52,3 +46,4 @@ terraform {
     dynamodb_table = "nexa-cloud-pilot-terraform-locks" 
   }
 }
+*/
