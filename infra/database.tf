@@ -9,22 +9,21 @@ resource "random_password" "rds_master" {
   override_special = "!#%&*()_+=-"
 }
 
-
 # Grupo de subredes para RDS (usa las privadas ya creadas)
 resource "aws_db_subnet_group" "nexa_subnet_group" {
   name       = "nexa-db-subnet-group"
   subnet_ids = [
-    "subnet-0ba127d7c38f549f2",
-    "subnet-05d338d9ae527088f"
+    "subnet-06b410ed8346d7a86", # privada 1
+    "subnet-0fc351a932d92cf97"  # privada 2
   ]
   description = "Subredes privadas para RDS NexaCloud"
 }
 
-# Security Group para RDS
+# Security Group para RDS (permite acceso interno desde EC2/Lambdas)
 resource "aws_security_group" "nexa_rds_sg" {
   name        = "nexa-rds-sg"
   description = "Permite acceso al RDS en puerto 9876"
-  vpc_id      = "vpc-01e3265cca52090cd"
+  vpc_id      = "vpc-0d95bda27a2680ee4"
 
   ingress {
     description = "Acceso interno al RDS desde la VPC"
