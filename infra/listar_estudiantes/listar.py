@@ -3,13 +3,14 @@ import psycopg2
 import os
 
 def lambda_handler(event, context):
+    conn = None
     try:
         conn = psycopg2.connect(
             host=os.environ['DB_HOST'],
             database=os.environ['DB_NAME'],
             user=os.environ['DB_USER'],
             password=os.environ['DB_PASS'],
-            port=os.environ['DB_PORT']
+            port=os.environ.get('DB_PORT', '9876')
         )
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM estudiante ORDER BY id;")

@@ -10,43 +10,44 @@ locals {
     DB_NAME = "estudiante"
     DB_USER = "nexa_admin"
     DB_PASS = "tjaUWyY7c+wXXl6r"
-    DB_PORT = "5432"
+    DB_PORT = "9876"
   }
 }
 
 # Reutilizamos el mismo rol y variables para cada lambda
 resource "aws_lambda_function" "add_student" {
-  filename         = "añadir_estudiante.zip"
+  filename         = "${path.module}/añadir_estudiante/añadir_estudiante.zip"
   function_name    = "add_student"
   role             = data.aws_iam_role.labrole.arn
-  handler          = "main.lambda_handler"
+  handler          = "add.lambda_handler"
   runtime          = "python3.12"
-  source_code_hash = filebase64sha256("añadir_estudiante.zip")
+  source_code_hash = filebase64sha256("${path.module}/añadir_estudiante/añadir_estudiante.zip")
   environment {
     variables = local.db_env
   }
 }
 
 resource "aws_lambda_function" "list_students" {
-  filename         = "listar_estudiantes.zip"
+  filename         = "${path.module}/listar_estudiantes/listar_estudiantes.zip"
   function_name    = "list_students"
   role             = data.aws_iam_role.labrole.arn
-  handler          = "main.lambda_handler"
+  handler          = "list.lambda_handler"
   runtime          = "python3.12"
-  source_code_hash = filebase64sha256("listar_estudiantes.zip")
+  source_code_hash = filebase64sha256("${path.module}/listar_estudiantes/listar_estudiantes.zip")
   environment {
     variables = local.db_env
   }
 }
 
 resource "aws_lambda_function" "delete_student" {
-  filename         = "eliminar_estudiante.zip"
+  filename         = "${path.module}/eliminar_estudiante/eliminar_estudiante.zip"
   function_name    = "delete_student"
   role             = data.aws_iam_role.labrole.arn
-  handler          = "main.lambda_handler"
+  handler          = "delete.lambda_handler"
   runtime          = "python3.12"
-  source_code_hash = filebase64sha256("eliminar_estudiante.zip")
+  source_code_hash = filebase64sha256("${path.module}/eliminar_estudiante/eliminar_estudiante.zip")
   environment {
     variables = local.db_env
   }
 }
+
