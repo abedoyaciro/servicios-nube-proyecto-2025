@@ -74,3 +74,8 @@ output "rds_endpoint" {
   description = "Endpoint del RDS NexaCloud"
   value       = aws_db_instance.nexa_db.endpoint
 }
+output "rds_master_password" {
+  description = "Contraseña generada del usuario administrador del RDS"
+  value       = random_password.rds_master.result
+  sensitive   = true
+}
