@@ -1,23 +1,22 @@
 ###################################
-# STORAGE - S3 Bucket (versión estable compatible)
+# STORAGE - S3 Bucket (seguro y con cifrado)
 ###################################
 
-# Genera un sufijo aleatorio para asegurar nombre único de bucket
 resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
-# Crea el bucket privado (sin ACLs)
 resource "aws_s3_bucket" "nexa_bucket" {
   bucket = "nexa-cloud-storage-${random_id.bucket_suffix.hex}"
 
   tags = {
-    Name    = "nexa-cloud-storage"
-    Project = "NexaCloud"
+    Name        = "nexa-cloud-storage"
+    Project     = "NexaCloud"
+    Environment = "learner-lab"
+    Owner       = "Kevin_Ramos"
   }
 }
 
-# Bloquea todo acceso público
 resource "aws_s3_bucket_public_access_block" "nexa_block" {
   bucket                  = aws_s3_bucket.nexa_bucket.id
   block_public_acls       = true
@@ -26,7 +25,15 @@ resource "aws_s3_bucket_public_access_block" "nexa_block" {
   restrict_public_buckets = true
 }
 
-# Output para otros módulos o para la aplicación
+resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+  bucket = aws_s3_bucket.nexa_bucket.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
 output "s3_bucket_name" {
   description = "Nombre del bucket S3 NexaCloud"
   value       = aws_s3_bucket.nexa_bucket.bucket
