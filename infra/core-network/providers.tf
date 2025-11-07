@@ -15,7 +15,6 @@ terraform {
     key            = "network-base.tfstate" # Clave ÚNICA para el estado de la red
     region         = "us-east-1"
     encrypt        = true
-    dynamodb_table = "nexa-cloud-pilot-terraform-locks" 
   }
 }
 
