@@ -55,3 +55,8 @@ output "rds_master_password" {
   value       = random_password.rds_master.result
   sensitive   = true
 }
+
+output "db_instance_id" {
+  description = "Identificador de la instancia RDS (necesario para monitoreo)"
+  value       = aws_db_instance.nexa_db.id
+}
