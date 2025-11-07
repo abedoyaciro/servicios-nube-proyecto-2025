@@ -1,8 +1,18 @@
 # infra/load-balancer/main.tf
 
 # ----------------------------------------------------
-# 1. REFERENCIAS DE ESTADO REMOTO
+# 1. REFERENCIAS DE ESTADO REMOTO Y CREACION
 # ----------------------------------------------------
+
+terraform {
+  backend "s3" {
+    bucket         = "nexa-cloud-tf-state-111811373821" 
+    key            = "load-balancer.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+  }
+}
+
 data "terraform_remote_state" "red_base" {
   backend = "s3"
   config = {
@@ -171,4 +181,9 @@ resource "aws_lb_target_group_attachment" "web_attachment" {
 output "alb_dns_name" {
   description = "El DNS del Application Load Balancer para acceder a la pagina web"
   value       = aws_lb.nexa_alb.dns_name
+}
+
+output "alb_arn_suffix" {
+  description = "El ARN Suffix del ALB (ID de CloudWatch)"
+  value       = aws_lb.nexa_alb.arn_suffix
 }
