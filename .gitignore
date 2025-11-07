@@ -45,6 +45,7 @@ next-env.d.ts
 # Archivos de estado local que DEBEN ser ignorados
 *.tfstate
 *.tfstate.backup
+*.tfvars
 # Directorio de plugins y caché (no debe subirse)
 .terraform/
 # Archivo de bloqueo de versiones de provider (generalmente se ignora si no se usa S3 backend)
