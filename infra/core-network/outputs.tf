@@ -89,3 +89,8 @@ output "sg_rds_id" {
   description = "ID del Security Group para RDS. Usos: aplicar reglas que permitan acceso solo desde capas de aplicación (p. ej. sg_ec2) y herramientas de gestión."
   value       = aws_security_group.nexa_sg_rds.id
 }
+
+output "nexa_images_bucket_name" {
+      description = "Nombre del bucket de S3 para imágenes."
+      value       = aws_s3_bucket.nexa_images.id
+    }

@@ -13,7 +13,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "nexa-cloud-tf-state-111811373821" 
+    bucket         = "nexa-cloud-tf-state-192626564201" 
     key            = "database.tfstate"              # Clave ÚNICA para el estado de la DB
     region         = "us-east-1"
     encrypt        = true
@@ -30,7 +30,7 @@ provider "aws" {
 data "terraform_remote_state" "red_base" {
   backend = "s3"
   config = {
-    bucket         = "nexa-cloud-tf-state-111811373821"
+    bucket         = "nexa-cloud-tf-state-192626564201"
     key            = "network-base.tfstate" # Lee el estado de tu red
     region         = "us-east-1"
   }

@@ -11,7 +11,7 @@ terraform {
 
   backend "s3" {
     # Usar el Bucket de estado definido en storage.tf
-    bucket         = "nexa-cloud-tf-state-111811373821" 
+    bucket         = "nexa-cloud-tf-state-192626564201" 
     key            = "network-base.tfstate" # Clave ÚNICA para el estado de la red
     region         = "us-east-1"
     encrypt        = true

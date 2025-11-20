@@ -1,22 +1,13 @@
 # infra/load-balancer/main.tf
 
 # ----------------------------------------------------
-# 1. REFERENCIAS DE ESTADO REMOTO Y CREACION
+# 1. REFERENCIAS DE ESTADO REMOTO
 # ----------------------------------------------------
-
-terraform {
-  backend "s3" {
-    bucket         = "nexa-cloud-tf-state-111811373821" 
-    key            = "load-balancer.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-  }
-}
 
 data "terraform_remote_state" "red_base" {
   backend = "s3"
   config = {
-    bucket = "nexa-cloud-tf-state-111811373821" # Reemplaza con tu bucket
+    bucket = "nexa-cloud-tf-state-192626564201" # Reemplaza con tu bucket
     key    = "network-base.tfstate"
     region = "us-east-1"
   }
@@ -116,7 +107,7 @@ data "template_file" "user_data_template" {
 resource "aws_instance" "web_server" {
   count                  = 2 # Despliega 2 servidores web
   ami                    = data.aws_ami.amazon_linux.id
-  instance_type          = "t2.micro" # Económico
+  instance_type          = "t3.micro" # Económico y compatible
   # Se usan las subredes públicas para que puedan ser alcanzadas por el ALB
   subnet_id              = data.terraform_remote_state.red_base.outputs.public_subnet_ids[count.index] 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]

@@ -11,7 +11,7 @@ terraform {
 
   # Configuración del Backend para el estado remoto en S3
   backend "s3" {
-    bucket         = "nexa-cloud-tf-state-111811373821"
+    bucket         = "nexa-cloud-tf-state-192626564201"
     key            = "load-balancer.tfstate"           
     region         = "us-east-1"
     encrypt        = true                              

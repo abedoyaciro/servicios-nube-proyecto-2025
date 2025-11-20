@@ -22,7 +22,7 @@ variable "account_id" {
   description = "ID de la cuenta AWS, usado para nombrar recursos globales como los S3 Buckets."
   type        = string
   # Valor defecto, que cada compañero debe cambiar manualmente.
-  default     = "111811373821" 
+  default     = "192626564201" 
 }
 
 variable "ssh_source_ip" {
